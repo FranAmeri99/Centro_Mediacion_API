@@ -8,12 +8,3 @@
         enrollment = '1111'
         is_staff = True
 
-
-
-           # last_name = models.CharField(max_length=255)
-   # gender = models.CharField(max_length=255)
-   # dni = models.CharField(max_length=255, unique=True)
-   # nationality = models.CharField(max_length=255)
-   # birth_date = models.DateField()
-   # username = models.CharField(max_length=255, unique=True)
-   # enrollment = models.CharField(max_length=255, unique=True)
