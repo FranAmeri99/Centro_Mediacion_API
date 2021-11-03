@@ -50,6 +50,7 @@ class ModelTests(TestCase):
         self.assertTrue(user.check_password(password))
 
     def test_create_lawyer_user(self):
+        """Creat a new lawyer user"""
         email = 'test@superuser.com'
         password = 'test123'
         enrollment = '1111'
@@ -62,6 +63,7 @@ class ModelTests(TestCase):
         self.assertEqual(user.enrollment, enrollment)
         
     def test_user_email(self):
+        """Test normalize email"""
         email = 'test@FRANCISCO.com'
         user =get_user_model().objects.create_user(email, 'test123')
         
