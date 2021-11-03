@@ -49,6 +49,18 @@ class ModelTests(TestCase):
         self.assertEqual(user.enrollment, enrollment)
         self.assertTrue(user.check_password(password))
 
+    def test_create_lawyer_user(self):
+        email = 'test@superuser.com'
+        password = 'test123'
+        enrollment = '1111'
+        user = get_user_model().objects.creat_lawyer_user(
+            email, 
+            password,
+            enrollment
+            )
+        
+        self.assertEqual(user.enrollment, enrollment)
+        
     def test_user_email(self):
         email = 'test@FRANCISCO.com'
         user =get_user_model().objects.create_user(email, 'test123')

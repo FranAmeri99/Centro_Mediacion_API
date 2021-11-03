@@ -17,10 +17,17 @@ class UserManager(BaseUserManager):
         return user
 
     def creat_super_user(self, email, password, enrollment):
-        """Create and sabves new super user"""
+        """Create and saves new super user"""
         user = self.create_user(email, password)
         user.is_staff = True
         user.is_superuser = True
+        user.enrollment = enrollment
+        user.save(using = self._db)
+        return user
+    
+    def creat_lawyer_user(self, email, password, enrollment):
+        """Create and saves new lawyer user"""
+        user = self.create_user(email, password)
         user.enrollment = enrollment
         user.save(using = self._db)
         return user
