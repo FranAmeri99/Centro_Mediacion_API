@@ -1,50 +1,36 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
-                                        PermissionsMixin
-from django.utils import timezone
-import datetime
+
+from Users.models import *
+#from Resolution.models import Resolution  AGUS DESARROLLAR
 
 
-class UserManager(BaseUserManager):
+class State(models.Model):
+    description = models.CharField(max_length=255)
+    def __str__(self):
+        return self.description
 
-    def create_user(self, email, password=None, **extra_fields):
-        """Cretats and saves a new user"""
-        if not email:
-            raise ValueError("users must have an email addres")
-        user = self.model(email=self.normalize_email(email), **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def creat_super_user(self, email, password, enrollment):
-        """Create and saves new super user"""
-        user = self.create_user(email, password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.enrollment = enrollment
-        user.save(using = self._db)
-        return user
+class Case(models.Model):
+    meditor = models.ForeignKey(User, on_delete=models.CASCADE)
+    lawyer_applicant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lawyer_applicant')
+    client_applicant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='client_applicant')
+    lawyer_defendant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lawyer_defendant')
+    client_defendant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='client_defendant')
     
-    def creat_lawyer_user(self, email, password, enrollment):
-        """Create and saves new lawyer user"""
-        user = self.create_user(email, password)
-        user.enrollment = enrollment
-        user.save(using = self._db)
-        return user
+class MediationPortafolio(models.Model):
+    name       = models.CharField(max_length=255)
+    start_date = models.CharField(max_length=255)
+    end_date   = models.CharField(max_length=255)
+    state      = models.ForeignKey(State, on_delete=models.CASCADE)
+    #resolution = models.ForeignKey(Resolution, on_delete=models.CASCADE)   AGUS DESARROLLAR
+    case       = models.ForeignKey(Case, on_delete=models.CASCADE)
 
-class User(AbstractBaseUser, PermissionsMixin):
-    """Custom user model that suppors using email insted of username"""   
-    email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    gender = models.CharField(max_length=255)
-    dni = models.CharField(max_length=255, unique=True)
-    nationality = models.CharField(max_length=255)
-    birth_date = models.CharField(max_length=255) #DateField() Preguntar a javi
-    username = models.CharField(max_length=255, unique=True)
-    enrollment = models.CharField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    def __str__(self):
+        return "%s %s" % (self.name, self.start_date)
 
-    objects = UserManager()
-    USERNAME_FIELD = 'email'
+class MediationSessions(models.Model):
+    mediatonPortafolio = models.ForeignKey(MediationPortafolio, on_delete=models.CASCADE)
+    #resolution         = models.ForeignKey(Resolution, on_delete=models.CASCADE)   AGUS DESARROLLAR
+    
+    def __str__(self):
+        return "%s %s %s" % (self.mediatonPortafolio.name, self.resolution.name)
+
