@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-
+from Users.models import *
 class ModelTests(TestCase):
 
     def test_create_user_with_email_successful(self):
@@ -14,6 +14,28 @@ class ModelTests(TestCase):
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
 
+    def test_creat_new_superuser(self):
+        """"Test creating a new superuser"""
+
+        user = get_user_model().objects.create_superuser(
+            'test@superuser.com', 
+            'test123'
+            )
+            
+        self.assertTrue(user.is_staff)
+        
+
+    def test_creat_new_mediator(self):
+        """"Test creating a new mediator"""
+
+        user = get_user_model().objects.create_mediator(
+            'test@superuser.com', 
+            'test123',
+            '1111'
+            )
+            
+        self.assertTrue(user.is_staff)
+        
     def test_create_user_all_data(self):
         """Test creating a user complet"""
         email = 'test@francisco.com'
@@ -50,37 +72,29 @@ class ModelTests(TestCase):
         self.assertTrue(user.check_password(password))
 
     def test_create_lawyer_user(self):
+        """Test creating a Lawyer"""
         email = 'test@superuser.com'
         password = 'test123'
-        enrollment = '1111'
-        user = get_user_model().objects.creat_lawyer_user(
-            email, 
-            password,
-            enrollment
+        enrollment = '11111111111212'
+        user = get_user_model().objects.create_lawyer_user(
+            email = email,
+            password = password,
+            enrollment = enrollment,
             )
         
         self.assertEqual(user.enrollment, enrollment)
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
         
     def test_user_email(self):
+        """Test User Email"""
         email = 'test@FRANCISCO.com'
         user =get_user_model().objects.create_user(email, 'test123')
         
         self.assertEqual(user.email, email.lower())
 
     def test_new_user_invalid_email(self):
-        #"Test creating user no email raises error"
+
+        """Test creating user no email raises error"""
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user(None, 'test123')
-
-    def test_creat_new_superuser(self):
-        """"Test creating a new superuser"""
-
-        user = get_user_model().objects.creat_super_user(
-            'test@superuser.com', 
-            'test123',
-            '1111'
-            )
-            
-        self.assertTrue(user.is_staff)
-        self.assertTrue(user.is_superuser)
-    
