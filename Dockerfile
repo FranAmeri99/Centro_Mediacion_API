@@ -6,9 +6,9 @@ ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-RUN mkdir /app
+RUN mkdir /Centro
 WORKDIR /app
-#COPY ./app /app
+COPY ./app /app
 
-RUN adduser -D user
+RUN adduser -D usergit branch
 USER user
