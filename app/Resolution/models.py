@@ -1,7 +1,7 @@
 from django.db import models
-
+from django.utils.timezone import now
 class Resolution(models.Model):
-    date        = models.CharField(max_length=255)
+    date        = models.DateField(default=now())
     description = models.CharField(max_length=255)
 
     def create_resolution(self, date, description):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 from django.utils import timezone
 import datetime
+from django.utils.timezone import now
 
 
 class UserManager(BaseUserManager):
@@ -23,7 +24,7 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using = self._db)
         return user
-    
+   
     def create_lawyer_user(self, email, password, enrollment):
         """Create and saves new lawyer user"""
         user = self.create_user(email, password)
@@ -49,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=255)
     dni = models.CharField(max_length=255)#, unique=True)
     nationality = models.CharField(max_length=255)
-    birth_date = models.CharField(max_length=255) #DateField() Preguntar a javi
+    birth_date =models.DateField(default=now()) #DateField() Preguntar a javi
     username = models.CharField(max_length=255)#, unique=True)
     enrollment = models.CharField(max_length=255)#, unique=True)
     is_active = models.BooleanField(default=True)

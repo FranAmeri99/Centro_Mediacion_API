@@ -1,6 +1,10 @@
 from django.test import TestCase
 from core.models import State, Case, MediationPortafolio, MediationSessions
 from Users.models import User
+from Resolution.models import Resolution
+
+from django.utils.timezone import now
+
 class ModelTests(TestCase):
 
     def test_State(self):
@@ -41,27 +45,30 @@ class ModelTests(TestCase):
         lawyer_defendant.save()
         client_applicant.save()
         client_defendant.save()
-        
+        name = 'Ford vs Ferrari'
         case = Case.objects.create(
+            name=name,
             mediator = mediator,
             lawyer_applicant = lawyer_applicant,
             lawyer_defendant = lawyer_defendant,
             client_applicant = client_applicant,
-            client_defendant = client_defendant
-            
+            client_defendant = client_defendant   
         )
-
+        state = State.objects.create(
+            description = "una description"
+            )
         case.save()
+        
+        portfolio = MediationPortafolio.objects.create(
+            start_date = now(),
+            end_date = now(),
+            state = state,
+            resolution = Resolution.objects.create(description = 'no se resolvio'),
+            case = case
+        )
+        self.assertEqual(portfolio.case.client_defendant, case.client_defendant)
+        
         self.assertEqual(case.mediator.email, mediator.email)
         self.assertEqual(case.lawyer_applicant.email, lawyer_applicant.email)
         self.assertEqual(case.lawyer_defendant.email, lawyer_defendant.email)
-        self.assertEqual(case.lawyer_aplicant.email, lawyer_aplicant.email)
-
-    def test_Portafolio(self):
-        test_case()
-
-        portafolio = Portafolio.objects.create(
-            name="Portafolio",
-            start_date = '21/10/21'
-
-        )
+        

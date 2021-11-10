@@ -45,7 +45,7 @@ class ModelTests(TestCase):
         gender = 'male'
         dni = 11111111
         nationality = 'Argentino'
-        birth_date = '18/02/1999'
+        birth_date = now()
         username = 'FranAmeri'
         enrollment = '1111'
 
