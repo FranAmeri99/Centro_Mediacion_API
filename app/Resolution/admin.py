@@ -1,4 +1,10 @@
 from django.contrib import admin
 
 from Resolution.models import *
-admin.site.register(Resolution)
+class AdminResolution():
+    ordering = ['id']
+    list_display = ['description', 'date']
+
+
+admin.site.register(ResolutionPortfolio)
+admin.site.register(ResolutionSession)
