@@ -6,4 +6,5 @@ class AdminResolution():
     list_display = ['description', 'date']
 
 
-admin.site.register(Resolution)
+admin.site.register(ResolutionPortfolio)
+admin.site.register(ResolutionSession)
